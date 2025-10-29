@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>O Segredo Chinês</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: Verdana, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1.6;
+            padding: 10px;
+            color: #ffffff;
+        }
+
+        .container {
+            background: #111111;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 25px rgba(138, 43, 226, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid #8a2be2;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            color: #e2e2e2;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .btn {
+            background: #8a2be2;
+            color: white;
+            border: none;
+            padding: 16px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 12px 0;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            max-width: 280px;
+            touch-action: manipulation;
+        }
+
+        .btn:hover {
+            background: #7b1fd6;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 15px rgba(138, 43, 226, 0.5);
+        }
+
+        .btn-cta {
+            background: linear-gradient(45deg, #8a2be2, #9d4edd);
+            font-size: 18px;
+            padding: 18px 25px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4); }
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            margin: 8px 0;
+            padding: 16px 15px;
+            background: #1a1a1a;
+            border: 2px solid #333333;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            text-align: left;
+            touch-action: manipulation;
+            color: #ffffff;
+        }
+
+        .option-btn:hover {
+            background: #8a2be2;
+            color: white;
+            border-color: #8a2be2;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 16px;
+            background: #1a1a1a;
+            border: 2px solid #333333;
+            border-radius: 12px;
+            font-size: 16px;
+            margin: 15px 0;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #8a2be2;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .question-counter {
+            color: #8a2be2;
+            font-weight: bold;
+            margin: 8px 0;
+            font-size: 13px;
+        }
+
+        /* Estilo das telas de introdução */
+        .intro-screen {
+            background: linear-gradient(135deg, #1a1a1a, #2d1b4e);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #8a2be2;
+        }
+
+        .intro-screen h1 {
+            color: white;
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+
+        .intro-screen p {
+            margin-bottom: 15px;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .intro-image {
+            width: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid #8a2be2;
+        }
+
+        /* Balão unificado para hooks */
+        .unified-hook {
+            background: linear-gradient(45deg, #8a2be2, #6a0dad);
+            padding: 0;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #9d4edd;
+            box-shadow: 0 3px 10px rgba(138, 43, 226, 0.3);
+            overflow: hidden;
+        }
+
+        .hook-item {
+            padding: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .hook-item:not(:last-child) {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hook-item.main-hook {
+            background: linear-gradient(45deg, #ff3366, #8a2be2);
+            font-size: 1.2em;
+            padding: 18px;
+            animation: mainHookPulse 2s infinite;
+            border: none;
+        }
+
+        @keyframes mainHookPulse {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 6px 20px rgba(255, 51, 102, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4); }
+        }
+
+        /* Texto destacado */
+        .highlight-text {
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 51, 102, 0.5);
+        }
+
+        /* Depoimentos estilo Facebook */
+        .testimonials-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .testimonial {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #8a2be2;
+            text-align: left;
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .testimonial-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #8a2be2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .testimonial-name {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .testimonial-role {
+            font-size: 11px;
+            color: #cccccc;
+        }
+
+        .stars {
+            color: #FFD700;
+            font-size: 14px;
+            margin: 4px 0;
+        }
+
+        /* FAQ com dropdown */
+        .faq-container {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .faq-item {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #8a2be2;
+            cursor: pointer;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            color: #cccccc;
+            font-size: 0.9em;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            margin-top: 8px;
+        }
+
+        .faq-toggle {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* Selo de garantia */
+        .guarantee-badge {
+            background: linear-gradient(45deg, #8a2be2, #6a0dad);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #9d4edd;
+        }
+
+        /* Estilo para perguntas com imagens */
+        .question-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            border: 1px solid #8a2be2;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            margin: 15px 0;
+            height: 8px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(45deg, #8a2be2, #9d4edd);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* Estilo para a tela de pause */
+        .pause-screen {
+            background: linear-gradient(135deg, #1a1a1a, #2d1b4e);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #8a2be2;
+        }
+
+        .pause-screen h1 {
+            color: white;
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+
+        .pause-screen p {
+            margin-bottom: 15px;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .pause-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid #8a2be2;
+        }
+
+        .storytelling-question {
+            background: rgba(138, 43, 226, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 1px solid #8a2be2;
+            transition: all 0.5s ease;
+        }
+
+        /* Estilo para a tela de oferta */
+        .offer-highlight {
+            background: rgba(255, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #ff3366;
+            color: white;
+        }
+
+        .timer-container {
+            background: rgba(153, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            border: 2px solid #ff3366;
+        }
+
+        .timer {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .price-container {
+            margin: 20px 0;
+            color: white;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #000000;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .discount-price {
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .installment-price {
+            color: #ffffff;
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+
+        .checklist {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            font-size: 1em;
+        }
+
+        .checklist-item::before {
+            content: "✓";
+            color: #8a2be2;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .highlight-message {
+            background: rgba(138, 43, 226, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 2px solid #8a2be2;
+        }
+
+        .guarantee-section {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .guarantee-item {
+            text-align: center;
+            font-size: 0.8em;
+        }
+
+        .guarantee-icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        /* Melhorias para mobile */
+        @media (max-width: 360px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            h2 {
+                font-size: 1.3em;
+            }
+            
+            .btn {
+                padding: 14px 20px;
+                font-size: 15px;
+            }
+        }
+
+        /* Prevenir zoom em inputs */
+        @media screen and (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+
+        /* Estilos para as opções com imagens */
+        .option-with-image {
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+
+        .option-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px solid #8a2be2;
+        }
+
+        /* Estilos para o popup de oferta expirada */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: #111111;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            border: 2px solid #ff3366;
+        }
+
+        .popup-content h2 {
+            color: #ff3366;
+            margin-bottom: 15px;
+        }
+
+        /* Estilo para o texto da análise */
+        .analysis-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Centralizar o CTA */
+        .cta-center {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .arrow-down {
+            font-size: 2em;
+            margin: 10px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .warning-message {
+            background: rgba(255, 51, 102, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 2px solid #ff3366;
+        }
+        
+        .continue-btn {
+            display: none;
+        }
+        
+        .show-continue {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tela de Introdução -->
+        <div id="intro-screen" class="screen active">
+            <div class="intro-screen">
+                <!-- Balão unificado para título, imagem e mensagem -->
+                <div class="unified-hook">
+                    <div class="hook-item main-hook">
+                        <img src="https://img.cancaonova.com/cnimages/especiais/uploads/sites/4/2015/10/materia-joelhos.jpg" class="intro-image" alt="O Segredo Chinês">
+                        <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">O SEGREDO CHINÊS</h1>
+                        <span class="highlight-text">O código que dominou os homens na Ásia por séculos, nas suas mãos!</span>
+                    </div>
+                    <div class="hook-item">
+                        <span class="highlight-text">💘 SUA OPORTUNIDADE ESTÁ AQUI!</span>
+                    </div>
+                    <div class="hook-item">
+                        <span class="highlight-text">🚨 VOCÊ IMAGINA TER A CHANCE DE RECOMEÇAR TUDO?</span>
+                    </div>
+                    <div class="hook-item">
+                        <span class="highlight-text">⚡ CONTEÚDO LIMITADO ATÉ DEZEMBRO DE 2025.</span>
+                    </div>
+                </div>
+
+                <h2>Aquele cara que você sempre quis que te visse como uma prioridade, vai estar correndo por você agora!</h2>
+                
+                <!-- Depoimentos estilo Facebook -->
+                <div class="testimonials-container">
+                    <div class="testimonial">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">CP</div>
+                            <div>
+                                <div class="testimonial-name">Carla, 38 anos</div>
+                                <div class="testimonial-role">Solteira há 5 anos</div>
+                            </div>
+                        </div>
+                        <div class="stars">★★★★★</div>
+                        <div>"Após 3 semanas usando o método, o Pedro me pediu em namoro! Não acreditava que seria tão rápido. É como mágica!"</div>
+                    </div>
+
+                    <div class="testimonial">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">AS</div>
+                            <div>
+                                <div class="testimonial-name">Ana, 42 anos</div>
+                                <div class="testimonial-role">Divorciada</div>
+                            </div>
+                        </div>
+                        <div class="stars">★★★★★</div>
+                        <div>"O homem que eu gostava há 6 meses finalmente se declarou! Os gatilhos mentais funcionam magicamente. É incrível!"</div>
+                    </div>
+                </div>
+
+                <!-- FAQ com dropdown -->
+                <div class="faq-container">
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>❓ Funciona mesmo?</span>
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">Sim! 97% das mulheres que aplicaram o método tiveram resultados em até 30 dias. O método foi testado e comprovado por especialistas em relacionamentos.</div>
+                    </div>
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>⏰ Quanto tempo leva?</span>
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">A maioria vê resultados significativos nas primeiras 2 semanas. O programa completo dura 30 dias com exercícios diários simples de aplicar.</div>
+                    </div>
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>💳 É seguro?</span>
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">Sim! 100% seguro com garantia incondicional de 7 dias úteis. O conteúdo é legítimo e conferido por profissionais.</div>
+                    </div>
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>📚 O que vou receber?</span>
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">Você receberá acesso ao método completo em 7 módulos, material bônus exclusivo e suporte direto com nossa equipe por 30 dias.</div>
+                    </div>
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>👥 É para qualquer idade?</span>
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">Sim, o método funciona para mulheres de todas as idades. As técnicas são adaptáveis para diferentes situações e contextos relacionais.</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.8em; color: #cccccc; margin-top: 15px;">
+                    Ao continuar, você concorda com nossos <a href="#" style="color: #8a2be2;">Termos de Uso</a> e <a href="#" style="color: #8a2be2;">Política de Privacidade</a>
+                </p>
+            </div>
+            <div class="cta-center">
+                <button class="btn btn-cta" onclick="startQuiz()">QUERO VER MINHA ANÁLISE →</button>
+            </div>
+        </div>
+
+        <!-- Tela de Idade -->
+        <div id="age-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Análise de Compatibilidade Amorosa</h1>
+            <div class="question-counter">Pergunta 1 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 4%"></div>
+            </div>
+            <h2>Para personalizarmos sua análise, qual é a sua idade?</h2>
+            <button class="option-btn option-with-image" onclick="selectAge('25-30')">
+                <img src="https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/girl.png" class="option-image" alt="Jovem">
+                <span>A) 25 - 30 anos</span>
+            </button>
+            <button class="option-btn option-with-image" onclick="selectAge('31-35')">
+                <img src="https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/girl.png" class="option-image" alt="Jovem">
+                <span>B) 31 - 35 anos</span>
+            </button>
+            <button class="option-btn option-with-image" onclick="selectAge('36-40')">
+                <img src="https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/girl.png" class="option-image" alt="Jovem">
+                <span>C) 36 - 40 anos</span>
+            </button>
+            <button class="option-btn option-with-image" onclick="selectAge('41-45')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsGFviY-qtV4RGKNF-x2gifVzROcg5_e0ONg&s" class="option-image" alt="Mulher adulta">
+                <span>D) 41 - 45 anos</span>
+            </button>
+            <button class="option-btn option-with-image" onclick="selectAge('46-50')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsGFviY-qtV4RGKNF-x2gifVzROcg5_e0ONg&s" class="option-image" alt="Mulher adulta">
+                <span>E) 46 - 50 anos</span>
+            </button>
+            <button class="option-btn option-with-image" onclick="selectAge('51-55')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsGFviY-qtV4RGKNF-x2gifVzROcg5_e0ONg&s" class="option-image" alt="Mulher adulta">
+                <span>F) 51 - 55 anos</span>
+            </button>
+            <button class="option-btn option-with-image" onclick="selectAge('56-60')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAsAFOggOZk3tz_ExCzWk3qzRzxCwpsv_s0Q&s" class="option-image" alt="Mulher madura">
+                <span>G) 56 - 60 anos</span>
+            </button>
+            <button class="option-btn option-with-image" onclick="selectAge('61-65')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAsAFOggOZk3tz_ExCzWk3qzRzxCwpsv_s0Q&s" class="option-image" alt="Mulher madura">
+                <span>H) 61 - 65 anos</span>
+            </button>
+            <button class="option-btn option-with-image" onclick="selectAge('65+')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAsAFOggOZk3tz_ExCzWk3qzRzxCwpsv_s0Q&s" class="option-image" alt="Mulher madura">
+                <span>I) 65 anos ou mais</span>
+            </button>
+        </div>
+
+        <!-- Tela do Objetivo -->
+        <div id="objective-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Quase lá...</h1>
+            <div class="question-counter">Pergunta 2 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 8%"></div>
+            </div>
+            <h2>Seu objetivo é:</h2>
+            <button class="option-btn" onclick="selectObjective('Transformar minha vida amorosa')">Transformar minha vida amorosa completamente</button>
+            <button class="option-btn" onclick="selectObjective('Aumentar minha autoestima')">Aumentar minha autoestima e confiança</button>
+            <button class="option-btn" onclick="selectObjective('Descobrir segredos masculinos')">Descobrir os segredos da mente masculina</button>
+            <button class="option-btn" onclick="selectObjective('Conquistar o homem certo')">Conquistar o homem certo para mim</button>
+            <button class="option-btn" onclick="selectObjective('Superar relacionamentos passados')">Superar relacionamentos passados e recomeçar</button>
+            <button class="option-btn" onclick="selectObjective('Aprender a me valorizar')">Aprender a me valorizar e ser valorizada</button>
+        </div>
+
+        <!-- PERGUNTAS PESSOAIS (3-8) - SEM IMAGENS -->
+        <div id="personal1-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sobre Você</h1>
+            <div class="question-counter">Pergunta 3 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 12%"></div>
+            </div>
+            <h2>Como você descreveria sua personalidade?</h2>
+            <button class="option-btn" onclick="nextQuestion('personal1-screen', 'Extrovertida')">Extrovertida - adoro conhecer pessoas novas</button>
+            <button class="option-btn" onclick="nextQuestion('personal1-screen', 'Sociável')">Sociável - gosto de pessoas, mas preciso de tempo sozinha</button>
+            <button class="option-btn" onclick="nextQuestion('personal1-screen', 'Reservada')">Reservada - prefiro poucos amigos próximos</button>
+            <button class="option-btn" onclick="nextQuestion('personal1-screen', 'Introvertida')">Introvertida - preciso de muito tempo sozinha</button>
+        </div>
+
+        <div id="personal2-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sobre Você</h1>
+            <div class="question-counter">Pergunta 4 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 16%"></div>
+            </div>
+            <h2>Como você se cuida no dia a dia?</h2>
+            <button class="option-btn" onclick="nextQuestion('personal2-screen', 'Muito cuidadosa')">Muito - skincare, exercícios, dieta balanceada</button>
+            <button class="option-btn" onclick="nextQuestion('personal2-screen', 'Cuidados moderados')">Moderadamente - básico mas consistente</button>
+            <button class="option-btn" onclick="nextQuestion('personal2-screen', 'Pouco cuidadosa')">Pouco - quando lembro/dá tempo</button>
+            <button class="option-btn" onclick="nextQuestion('personal2-screen', 'Quase nada')">Quase nada - sem rotina definida</button>
+        </div>
+
+        <div id="personal3-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sobre Você</h1>
+            <div class="question-counter">Pergunta 5 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 20%"></div>
+            </div>
+            <h2>Como você se sente sobre sua vida social?</h2>
+            <button class="option-btn" onclick="nextQuestion('personal3-screen', 'Muito satisfeita')">Muito satisfeita - tenho muitos amigos</button>
+            <button class="option-btn" onclick="nextQuestion('personal3-screen', 'Satisfeita')">Satisfeita - amigos próximos são suficientes</button>
+            <button class="option-btn" onclick="nextQuestion('personal3-screen', 'Insatisfeita')">Insatisfeita - gostaria de mais amigos</button>
+            <button class="option-btn" onclick="nextQuestion('personal3-screen', 'Muito insatisfeita')">Muito insatisfeita - me sinto sozinha</button>
+        </div>
+
+        <div id="personal4-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sobre Você</h1>
+            <div class="question-counter">Pergunta 6 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 24%"></div>
+            </div>
+            <h2>Como você lida com o estresse?</h2>
+            <button class="option-btn" onclick="nextQuestion('personal4-screen', 'Muito bem')">Muito bem - tenho minhas estratégias</button>
+            <button class="option-btn" onclick="nextQuestion('personal4-screen', 'Razoavelmente')">Razoavelmente - às vezes fico sobrecarregada</button>
+            <button class="option-btn" onclick="nextQuestion('personal4-screen', 'Mal')">Mal - frequentemente ansiosa</button>
+            <button class="option-btn" onclick="nextQuestion('personal4-screen', 'Muito mal')">Muito mal - não lido bem com pressão</button>
+        </div>
+
+        <div id="personal5-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sobre Você</h1>
+            <div class="question-counter">Pergunta 7 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 28%"></div>
+            </div>
+            <h2>Como está sua autoestima?</h2>
+            <button class="option-btn" onclick="nextQuestion('personal5-screen', 'Muito alta')">Muito alta - me amo e me valorizo</button>
+            <button class="option-btn" onclick="nextQuestion('personal5-screen', 'Alta')">Alta - geralmente me sinto bem</button>
+            <button class="option-btn" onclick="nextQuestion('personal5-screen', 'Média')">Média - tenho altos e baixos</button>
+            <button class="option-btn" onclick="nextQuestion('personal5-screen', 'Baixa')">Baixa - frequentemente me critico</button>
+            <button class="option-btn" onclick="nextQuestion('personal5-screen', 'Muito baixa')">Muito baixa - não gosto de mim mesma</button>
+        </div>
+
+        <div id="personal6-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sobre Você</h1>
+            <div class="question-counter">Pergunta 8 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 32%"></div>
+            </div>
+            <h2>Como você se sente sobre seu futuro amoroso?</h2>
+            <button class="option-btn" onclick="nextQuestion('personal6-screen', 'Muito otimista')">Muito otimista - sei que vou encontrar alguém</button>
+            <button class="option-btn" onclick="nextQuestion('personal6-screen', 'Otimista')">Otimista - acredito que pode acontecer</button>
+            <button class="option-btn" onclick="nextQuestion('personal6-screen', 'Neutra')">Neutra - não penso muito nisso</button>
+            <button class="option-btn" onclick="nextQuestion('personal6-screen', 'Pessimista')">Pessimista - tenho minhas dúvidas</button>
+            <button class="option-btn" onclick="nextQuestion('personal6-screen', 'Muito pessimista')">Muito pessimista - acho difícil encontrar alguém</button>
+        </div>
+
+        <!-- Tela de Pause 1 -->
+        <div id="pause1-screen" class="screen">
+            <div class="pause-screen">
+                <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">NÃO DESISTA AGORA!</h1>
+                <h2>ESTAMOS ANALISANDO</h2>
+                <img src="https://img.freepik.com/fotos-gratis/mulher-sorridente-com-expressao-feliz_53876-139240.jpg" class="pause-image" alt="Mulher feliz">
+                <p>Você já completou <strong>33%</strong> da sua análise personalizada!</p>
+                <p>Milhares de mulheres já descobriram o segredo para transformar suas vidas amorosas.</p>
+                <p><strong>Você está a poucos passos de descobrir como aplicar o Código Chinês na sua vida!</strong></p>
+            </div>
+            <div class="cta-center">
+                <button id="continue-btn-1" class="btn btn-cta continue-btn" onclick="continueFromPause('pause1-screen', 'relationship1-screen')">CONTINUAR MINHA ANÁLISE →</button>
+            </div>
+        </div>
+
+        <!-- PERGUNTAS SOBRE RELACIONAMENTOS (9-14) - SEM IMAGENS -->
+        <div id="relationship1-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sua Vida Amorosa</h1>
+            <div class="question-counter">Pergunta 9 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 36%"></div>
+            </div>
+            <h2>Qual é seu status relacionamento atual?</h2>
+            <button class="option-btn" onclick="nextQuestion('relationship1-screen', 'Solteira')">Solteira - não estou me relacionando</button>
+            <button class="option-btn" onclick="nextQuestion('relationship1-screen', 'Saindo casualmente')">Saindo casualmente com alguém</button>
+            <button class="option-btn" onclick="nextQuestion('relationship1-screen', 'Em um relacionamento')">Em um relacionamento sério</button>
+            <button class="option-btn" onclick="nextQuestion('relationship1-screen', 'Divorciada/separada')">Divorciada/separada recentemente</button>
+            <button class="option-btn" onclick="nextQuestion('relationship1-screen', 'Viúva')">Viúva</button>
+        </div>
+
+        <div id="relationship2-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sua Vida Amorosa</h1>
+            <div class="question-counter">Pergunta 10 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 40%"></div>
+            </div>
+            <h2>Como você se sente sobre seus relacionamentos passados?</h2>
+            <button class="option-btn" onclick="nextQuestion('relationship2-screen', 'Superei completamente')">Superei completamente</button>
+            <button class="option-btn" onclick="nextQuestion('relationship2-screen', 'Quase superei')">Quase superei, mas ainda penso às vezes</button>
+            <button class="option-btn" onclick="nextQuestion('relationship2-screen', 'Ainda me afeta')">Ainda me afeta emocionalmente</button>
+            <button class="option-btn" onclick="nextQuestion('relationship2-screen', 'Muito presente')">Ainda muito presente na minha mente</button>
+            <button class="option-btn" onclick="nextQuestion('relationship2-screen', 'Não tive relacionamentos')">Não tive relacionamentos sérios</button>
+        </div>
+
+        <div id="relationship3-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sua Vida Amorosa</h1>
+            <div class="question-counter">Pergunta 11 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 44%"></div>
+            </div>
+            <h2>O que mais te preocupa em relacionamentos?</h2>
+            <button class="option-btn" onclick="nextQuestion('relationship3-screen', 'Ser traída')">Ser traída ou abandonada</button>
+            <button class="option-btn" onclick="nextQuestion('relationship3-screen', 'Não ser amada')">Não ser amada de verdade</button>
+            <button class="option-btn" onclick="nextQuestion('relationship3-screen', 'Perder minha independência')">Perder minha independência</button>
+            <button class="option-btn" onclick="nextQuestion('relationship3-screen', 'Não encontrar alguém compatível')">Não encontrar alguém compatível</button>
+            <button class="option-btn" onclick="nextQuestion('relationship3-screen', 'Repetir erros passados')">Repetir os erros do passado</button>
+        </div>
+
+        <div id="relationship4-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sua Vida Amorosa</h1>
+            <div class="question-counter">Pergunta 12 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 48%"></div>
+            </div>
+            <h2>Como você reage a conflitos no relacionamento?</h2>
+            <button class="option-btn" onclick="nextQuestion('relationship4-screen', 'Busco diálogo')">Busco diálogo imediato</button>
+            <button class="option-btn" onclick="nextQuestion('relationship4-screen', 'Preciso de tempo')">Preciso de um tempo para pensar</button>
+            <button class="option-btn" onclick="nextQuestion('relationship4-screen', 'Fico na defensiva')">Fico na defensiva</button>
+            <button class="option-btn" onclick="nextQuestion('relationship4-screen', 'Evito conflitos')">Evito conflitos a qualquer custo</button>
+            <button class="option-btn" onclick="nextQuestion('relationship4-screen', 'Não sei lidar')">Não sei lidar bem com conflitos</button>
+        </div>
+
+        <div id="relationship5-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sua Vida Amorosa</h1>
+            <div class="question-counter">Pergunta 13 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 52%"></div>
+            </div>
+            <h2>O que você mais valoriza em um parceiro?</h2>
+            <button class="option-btn" onclick="nextQuestion('relationship5-screen', 'Honestidade e lealdade')">Honestidade e lealdade</button>
+            <button class="option-btn" onclick="nextQuestion('relationship5-screen', 'Inteligência e humor')">Inteligência e senso de humor</button>
+            <button class="option-btn" onclick="nextQuestion('relationship5-screen', 'Ambição e estabilidade')">Ambição e estabilidade financeira</button>
+            <button class="option-btn" onclick="nextQuestion('relationship5-screen', 'Sensibilidade e cuidado')">Sensibilidade e cuidado</button>
+            <button class="option-btn" onclick="nextQuestion('relationship5-screen', 'Independência e respeito')">Independência e respeito mútuo</button>
+        </div>
+
+        <div id="relationship6-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Sua Vida Amorosa</h1>
+            <div class="question-counter">Pergunta 14 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 56%"></div>
+            </div>
+            <h2>Como você demonstra amor e afeto?</h2>
+            <button class="option-btn" onclick="nextQuestion('relationship6-screen', 'Palavras de afirmação')">Com palavras de afirmação e elogios</button>
+            <button class="option-btn" onclick="nextQuestion('relationship6-screen', 'Toque físico')">Com toque físico e carinho</button>
+            <button class="option-btn" onclick="nextQuestion('relationship6-screen', 'Tempo de qualidade')">Dedicando tempo de qualidade</button>
+            <button class="option-btn" onclick="nextQuestion('relationship6-screen', 'Atos de serviço')">Fazendo coisas pela pessoa</button>
+            <button class="option-btn" onclick="nextQuestion('relationship6-screen', 'Presentes')">Dando presentes e surpresas</button>
+        </div>
+
+        <!-- PERGUNTAS SOBRE ATRAÇÃO (15-20) - SEM IMAGENS -->
+        <div id="attraction1-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Atração e Conexão</h1>
+            <div class="question-counter">Pergunta 15 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 60%"></div>
+            </div>
+            <h2>O que te atrai primeiro em um homem?</h2>
+            <button class="option-btn" onclick="nextQuestion('attraction1-screen', 'Aparência física')">Aparência física</button>
+            <button class="option-btn" onclick="nextQuestion('attraction1-screen', 'Confiança')">Confiança e postura</button>
+            <button class="option-btn" onclick="nextQuestion('attraction1-screen', 'Inteligência')">Inteligência e conversa</button>
+            <button class="option-btn" onclick="nextQuestion('attraction1-screen', 'Senso de humor')">Senso de humor</button>
+            <button class="option-btn" onclick="nextQuestion('attraction1-screen', 'Gentileza')">Gentileza e educação</button>
+        </div>
+
+        <div id="attraction2-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Atração e Conexão</h1>
+            <div class="question-counter">Pergunta 16 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 64%"></div>
+            </div>
+            <h2>Como você age quando está interessada em alguém?</h2>
+            <button class="option-btn" onclick="nextQuestion('attraction2-screen', 'Tomo iniciativa')">Tomo iniciativa direta</button>
+            <button class="option-btn" onclick="nextQuestion('attraction2-screen', 'Dou sinais sutis')">Dou sinais sutis</button>
+            <button class="option-btn" onclick="nextQuestion('attraction2-screen', 'Espero ele tomar iniciativa')">Espero ele tomar iniciativa</button>
+            <button class="option-btn" onclick="nextQuestion('attraction2-screen', 'Fico tímida')">Fico tímida e evito contato</button>
+            <button class="option-btn" onclick="nextQuestion('attraction2-screen', 'Ajo naturalmente')">Ajo naturalmente, sem joguinhos</button>
+        </div>
+
+        <div id="attraction3-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Atração e Conexão</h1>
+            <div class="question-counter">Pergunta 17 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 68%"></div>
+            </div>
+            <h2>O que mais te faz perder o interesse em alguém?</h2>
+            <button class="option-btn" onclick="nextQuestion('attraction3-screen', 'Falta de ambição')">Falta de ambição e objetivos</button>
+            <button class="option-btn" onclick="nextQuestion('attraction3-screen', 'Egoísmo')">Egoísmo e falta de consideração</button>
+            <button class="option-btn" onclick="nextQuestion('attraction3-screen', 'Insegurança')">Insegurança excessiva</button>
+            <button class="option-btn" onclick="nextQuestion('attraction3-screen', 'Má comunicação')">Má comunicação e joguinhos</button>
+            <button class="option-btn" onclick="nextQuestion('attraction3-screen', 'Desinteresse')">Desinteresse ou frieza</button>
+        </div>
+
+        <div id="attraction4-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Atração e Conexão</h1>
+            <div class="question-counter">Pergunta 18 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 72%"></div>
+            </div>
+            <h2>Como você reage quando um homem demonstra muito interesse?</h2>
+            <button class="option-btn" onclick="nextQuestion('attraction4-screen', 'Fico mais interessada')">Fico mais interessada</button>
+            <button class="option-btn" onclick="nextQuestion('attraction4-screen', 'Fico desconfiada')">Fico desconfiada</button>
+            <button class="option-btn" onclick="nextQuestion('attraction4-screen', 'Fico entusiasmada')">Fico entusiasmada e correspondo</button>
+            <button class="option-btn" onclick="nextQuestion('attraction4-screen', 'Me afasto um pouco')">Me afasto um pouco para pensar</button>
+            <button class="option-btn" onclick="nextQuestion('attraction4-screen', 'Ajo com naturalidade')">Ajo com naturalidade</button>
+        </div>
+
+        <div id="attraction5-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Atração e Conexão</h1>
+            <div class="question-counter">Pergunta 19 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 76%"></div>
+            </div>
+            <h2>O que você acha mais sexy em um homem?</h2>
+            <button class="option-btn" onclick="nextQuestion('attraction5-screen', 'Confiança')">Confiança sem arrogância</button>
+            <button class="option-btn" onclick="nextQuestion('attraction5-screen', 'Inteligência')">Inteligência e conhecimento</button>
+            <button class="option-btn" onclick="nextQuestion('attraction5-screen', 'Ambição')">Ambição e determinação</button>
+            <button class="option-btn" onclick="nextQuestion('attraction5-screen', 'Sensibilidade')">Sensibilidade e empatia</button>
+            <button class="option-btn" onclick="nextQuestion('attraction5-screen', 'Humor')">Humor e leveza</button>
+        </div>
+
+        <div id="attraction6-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Atração e Conexão</h1>
+            <div class="question-counter">Pergunta 20 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 80%"></div>
+            </div>
+            <h2>Como você mantém o interesse em um relacionamento?</h2>
+            <button class="option-btn" onclick="nextQuestion('attraction6-screen', 'Mantendo mistério')">Mantendo um pouco de mistério</button>
+            <button class="option-btn" onclick="nextQuestion('attraction6-screen', 'Cultivando intimidade')">Cultivando intimidade emocional</button>
+            <button class="option-btn" onclick="nextQuestion('attraction6-screen', 'Surpreendendo')">Surpreendendo e inovando</button>
+            <button class="option-btn" onclick="nextQuestion('attraction6-screen', 'Comunicando')">Comunicando abertamente</button>
+            <button class="option-btn" onclick="nextQuestion('attraction6-screen', 'Dando espaço')">Dando espaço e independência</button>
+        </div>
+
+        <!-- Tela de Pause 2 -->
+        <div id="pause2-screen" class="screen">
+            <div class="pause-screen">
+                <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">VOCÊ ESTÁ QUASE LÁ!</h1>
+                <h2>ESTAMOS ANALISANDO</h2>
+                <img src="https://img.freepik.com/fotos-gratis/mulher-bonita-sorridente-com-cabelos-longos-e-olhos-azuis_291049-1165.jpg" class="pause-image" alt="Mulher confiante">
+                <p>Você já completou <strong>83%</strong> da sua análise personalizada!</p>
+                <p>Estamos quase terminando de processar suas respostas para criar seu relatório completo.</p>
+                <p><strong>Faltam apenas 4 perguntas para revelarmos como o Código Chinês pode transformar sua vida amorosa!</strong></p>
+            </div>
+            <div class="cta-center">
+                <button id="continue-btn-2" class="btn btn-cta continue-btn" onclick="continueFromPause('pause2-screen', 'final1-screen')">CONTINUAR MINHA ANÁLISE →</button>
+            </div>
+        </div>
+
+        <!-- PERGUNTAS FINAIS (21-24) - SEM IMAGENS -->
+        <div id="final1-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Preparação para os Resultados</h1>
+            <div class="question-counter">Pergunta 21 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 84%"></div>
+            </div>
+            <h2>Quanto tempo você está disposta a investir para transformar sua vida amorosa?</h2>
+            <button class="option-btn" onclick="nextQuestion('final1-screen', 'O tempo que for necessário')">O tempo que for necessário</button>
+            <button class="option-btn" onclick="nextQuestion('final1-screen', 'Algumas horas por semana')">Algumas horas por semana</button>
+            <button class="option-btn" onclick="nextQuestion('final1-screen', 'Poucos minutos por dia')">Poucos minutos por dia</button>
+            <button class="option-btn" onclick="nextQuestion('final1-screen', 'Não tenho muito tempo')">Não tenho muito tempo disponível</button>
+        </div>
+
+        <div id="final2-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Preparação para os Resultados</h1>
+            <div class="question-counter">Pergunta 22 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 88%"></div>
+            </div>
+            <h2>O que você acredita que mais te impede de ter o relacionamento dos sonhos?</h2>
+            <button class="option-btn" onclick="nextQuestion('final2-screen', 'Minhas inseguranças')">Minhas próprias inseguranças</button>
+            <button class="option-btn" onclick="nextQuestion('final2-screen', 'Falta de oportunidade')">Falta de oportunidade de conhecer pessoas</button>
+            <button class="option-btn" onclick="nextQuestion('final2-screen', 'Experiências passadas')">Experiências passadas negativas</button>
+            <button class="option-btn" onclick="nextQuestion('final2-screen', 'Não saber flertar')">Não saber como flertar e conquistar</button>
+            <button class="option-btn" onclick="nextQuestion('final2-screen', 'Padrões altos')">Meus padrões são muito altos</button>
+        </div>
+
+        <div id="final3-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Preparação para os Resultados</h1>
+            <div class="question-counter">Pergunta 23 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 92%"></div>
+            </div>
+            <h2>Qual é o maior benefício que você espera obter com essa análise?</h2>
+            <button class="option-btn" onclick="nextQuestion('final3-screen', 'Encontrar um parceiro')">Encontrar um parceiro ideal</button>
+            <button class="option-btn" onclick="nextQuestion('final3-screen', 'Aumentar autoestima')">Aumentar minha autoestima</button>
+            <button class="option-btn" onclick="nextQuestion('final3-screen', 'Entender homens')">Entender a mente masculina</button>
+            <button class="option-btn" onclick="nextQuestion('final3-screen', 'Superar o passado')">Superar relacionamentos passados</button>
+            <button class="option-btn" onclick="nextQuestion('final3-screen', 'Aprender a seduzir')">Aprender a arte da sedução</button>
+        </div>
+
+        <div id="final4-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">Preparação para os Resultados</h1>
+            <div class="question-counter">Pergunta 24 de 24</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 96%"></div>
+            </div>
+            <h2>Qual é o seu nível de comprometimento em seguir um método para transformar sua vida amorosa?</h2>
+            <button class="option-btn" onclick="nextQuestion('final4-screen', 'Totalmente comprometida')">Totalmente comprometida - farei o que for necessário</button>
+            <button class="option-btn" onclick="nextQuestion('final4-screen', 'Muito comprometida')">Muito comprometida - seguirei as orientações</button>
+            <button class="option-btn" onclick="nextQuestion('final4-screen', 'Comprometida')">Comprometida - tentarei minha melhor versão</button>
+            <button class="option-btn" onclick="nextQuestion('final4-screen', 'Um pouco comprometida')">Um pouco comprometida - verei se funciona</button>
+            <button class="option-btn" onclick="nextQuestion('final4-screen', 'Ainda em dúvida')">Ainda em dúvida sobre meu comprometimento</button>
+        </div>
+
+        <!-- Tela de Processamento -->
+        <div id="processing-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">ANALISANDO SUAS RESPOSTAS...</h1>
+            <div class="progress-container">
+                <div class="progress-bar" id="processing-bar" style="width: 0%"></div>
+            </div>
+            <h2>Nossa inteligência artificial está processando suas respostas</h2>
+            <p style="margin: 15px 0;">Isso pode levar alguns segundos...</p>
+            <div class="storytelling-question">
+                <p>🔍 Analisando seu perfil psicológico...</p>
+            </div>
+            <div class="storytelling-question">
+                <p>💞 Identificando padrões amorosos...</p>
+            </div>
+            <div class="storytelling-question">
+                <p>🧠 Mapeando compatibilidades...</p>
+            </div>
+            <div class="storytelling-question">
+                <p>✨ Preparando recomendações personalizadas...</p>
+            </div>
+        </div>
+
+        <!-- Tela de Resultados -->
+        <div id="results-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">SUA ANÁLISE ESTÁ PRONTA!</h1>
+            <div class="analysis-text">
+                <p>Com base nas suas respostas, identificamos que:</p>
+                <p>✅ Você tem um <strong>potencial amoroso extraordinário</strong> que ainda não foi totalmente explorado</p>
+                <p>✅ Existem <strong>3 bloqueios específicos</strong> impedindo você de atrair o homem ideal</p>
+                <p>✅ Você possui <strong>características únicas</strong> que são extremamente atraentes para homens de alta qualidade</p>
+                <p>✅ Com as técnicas certas, você pode <strong>multiplicar sua atração</strong> em até 5x</p>
+            </div>
+
+            <div class="highlight-message">
+                <p>🎯 <strong>SEU PERFIL:</strong> MULHER DE ALTO VALOR COM BLOQUEIOS EMOCIONAIS</p>
+                <p>💡 <strong>POTENCIAL REVELADO:</strong> 87% DE COMPATIBILIDADE COM HOMENS BEM-SUCEDIDOS</p>
+            </div>
+
+            <div class="arrow-down">↓</div>
+
+            <div class="offer-highlight">
+                <h2>🚨 OFERTA EXCLUSIVA 🚨</h2>
+                <p>Você foi selecionada para acesso antecipado ao</p>
+                <h2 style="color: #ffffff; margin: 10px 0;">CÓDIGO CHINÊS</h2>
+                <p>O método que revela os segredos ancestrais para dominar a mente masculina</p>
+            </div>
+
+            <div class="timer-container">
+                <p>OFERTA EXPIRA EM:</p>
+                <div class="timer" id="countdown-timer">15:00</div>
+                <p>Não perca esta oportunidade única!</p>
+            </div>
+
+            <div class="price-container">
+                <p class="original-price">De R$ 59,99</p>
+                <p class="discount-price">Por apenas 2x de R$ 9,95</p>
+                <p class="installment-price">ou R$ 19,90 à vista</p>
+            </div>
+
+            <div class="warning-message">
+                <p>⚠️ Atenção: esse acesso é liberado só pra mulheres que querem resultados REAIS e rápidos.</p>
+            </div>
+            
+            <div class="highlight-message">
+                <p>🎉 Depois que você aplicar isso, ele nunca mais vai te olhar da mesma forma.</p>
+                <p>O segredo está no Método Código Chinês, e quem descobre, domina.</p>
+            </div>
+            
+            <div class="warning-message">
+                <p>⚠️ O acesso fecha a qualquer momento. Veja abaixo e garanta o seu.</p>
+                <p>💣 Esse método foi removido 3 vezes por ser forte demais.</p>
+            </div>
+
+            <div class="guarantee-section">
+                <div class="guarantee-item">
+                    <div class="guarantee-icon">🔒</div>
+                    <div>Pagamento<br>Seguro</div>
+                </div>
+                <div class="guarantee-item">
+                    <div class="guarantee-icon">↩️</div>
+                    <div>Garantia<br>7 Dias</div>
+                </div>
+                <div class="guarantee-item">
+                    <div class="guarantee-icon">⚡</div>
+                    <div>Acesso<br>Imediato</div>
+                </div>
+            </div>
+
+            <div class="guarantee-badge">
+                <p>✅ <strong>GARANTIA INCONDICIONAL DE 7 DIAS</strong></p>
+                <p>Se em 7 dias você não estiver completamente satisfeita, devolvemos 100% do seu investimento.</p>
+            </div>
+
+            <div class="cta-center">
+                <a href="https://swageveryday.mycartpanda.com/checkout/200613524:1" class="btn btn-cta" target="_blank">QUERO ACESSAR O CÓDIGO CHINÊS!</a>
+                <p style="font-size: 0.8em; margin-top: 10px;">🔒 Pagamento 100% seguro via cartão, Pix ou PayPal</p>
+            </div>
+        </div>
+
+        <!-- Tela de Obrigado -->
+        <div id="thankyou-screen" class="screen">
+            <h1><img src="https://img.freepik.com/premium-vector/squared-manuscript-japanese-handwriting-paper-hieroglyph-genko-yoshi-vector_926199-3717715.jpg" class="logo" alt="Logo">PARABÉNS!</h1>
+            
+            <div class="highlight-message">
+                <p>🎉 SUA COMPRA FOI CONFIRMADA COM SUCESSO! 🎉</p>
+            </div>
+
+            <p style="margin: 15px 0; text-align: center;">
+                Em instantes você receberá um e-mail com seus dados de acesso ao <strong>Código Chinês</strong> e todos os bônus.
+            </p>
+
+            <div class="guarantee-badge">
+                <p>📧 <strong>VERIFIQUE SEU E-MAIL</strong></p>
+                <p>Enviamos todas as instruções para o e-mail: <strong id="user-email"></strong></p>
+            </div>
+
+            <button class="btn btn-cta" onclick="goToMembersArea()">ACESSAR MINHA ÁREA DE MEMBROS</button>
+            
+            <p style="font-size: 0.8em; margin-top: 15px; color: #cccccc; text-align: center;">
+                Em caso de dúvidas, entre em contato conosco: suporte@codigochines.com
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis globais
+        let userData = {
+            age: '',
+            objective: '',
+            answers: []
+        };
+
+        // Iniciar o quiz
+        function startQuiz() {
+            showScreen('age-screen');
+        }
+
+        // Selecionar idade
+        function selectAge(age) {
+            userData.age = age;
+            showScreen('objective-screen');
+        }
+
+        // Selecionar objetivo
+        function selectObjective(objective) {
+            userData.objective = objective;
+            showScreen('personal1-screen');
+        }
+
+        // Navegar para próxima pergunta
+        function nextQuestion(currentScreen, answer) {
+            userData.answers.push(answer);
+            
+            // Mapeamento das próximas telas - CORRIGIDO
+            const screenFlow = {
+                'personal1-screen': 'personal2-screen',
+                'personal2-screen': 'personal3-screen',
+                'personal3-screen': 'personal4-screen',
+                'personal4-screen': 'personal5-screen',
+                'personal5-screen': 'personal6-screen',
+                'personal6-screen': 'pause1-screen',
+                'pause1-screen': 'relationship1-screen',
+                'relationship1-screen': 'relationship2-screen',
+                'relationship2-screen': 'relationship3-screen',
+                'relationship3-screen': 'relationship4-screen',
+                'relationship4-screen': 'relationship5-screen',
+                'relationship5-screen': 'relationship6-screen',
+                'relationship6-screen': 'attraction1-screen',
+                'attraction1-screen': 'attraction2-screen',
+                'attraction2-screen': 'attraction3-screen',
+                'attraction3-screen': 'attraction4-screen',
+                'attraction4-screen': 'attraction5-screen',
+                'attraction5-screen': 'attraction6-screen',
+                'attraction6-screen': 'pause2-screen',
+                'pause2-screen': 'final1-screen',
+                'final1-screen': 'final2-screen',
+                'final2-screen': 'final3-screen',
+                'final3-screen': 'final4-screen',
+                'final4-screen': 'processing-screen'
+            };
+
+            const nextScreen = screenFlow[currentScreen];
+            if (nextScreen) {
+                showScreen(nextScreen);
+                
+                // Se for uma tela de pausa, iniciar timer para mostrar o botão
+                if (nextScreen.includes('pause')) {
+                    setTimeout(() => {
+                        const continueBtn = nextScreen === 'pause1-screen' 
+                            ? document.getElementById('continue-btn-1')
+                            : document.getElementById('continue-btn-2');
+                        if (continueBtn) {
+                            continueBtn.classList.add('show-continue');
+                        }
+                    }, 5000); // 5 segundos
+                }
+                
+                // Se for a tela de processamento, iniciar a animação
+                if (nextScreen === 'processing-screen') {
+                    startProcessing();
+                }
+            }
+        }
+
+        // Função para continuar da pausa
+        function continueFromPause(currentScreen, nextScreen) {
+            showScreen(nextScreen);
+        }
+
+        // Mostrar tela específica
+        function showScreen(screenId) {
+            // Esconder todas as telas
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar a tela desejada
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+                
+                // Rolar para o topo
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Iniciar animação de processamento
+        function startProcessing() {
+            const progressBar = document.getElementById('processing-bar');
+            let width = 0;
+            
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        showScreen('results-screen');
+                        startCountdownTimer();
+                    }, 1000);
+                } else {
+                    width += 2;
+                    progressBar.style.width = width + '%';
+                }
+            }, 100);
+        }
+
+        // Iniciar contador regressivo
+        function startCountdownTimer() {
+            let timeLeft = 15 * 60; // 15 minutos em segundos
+            
+            const timerElement = document.getElementById('countdown-timer');
+            
+            const countdown = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    showOfferExpiredPopup();
+                } else {
+                    timeLeft--;
+                    
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    
+                    const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timerElement) timerElement.textContent = timeString;
+                }
+            }, 1000);
+        }
+
+        // Mostrar popup de oferta expirada
+        function showOfferExpiredPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'popup-overlay';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <h2>⏰ OFERTA EXPIRADA</h2>
+                    <p>Infelizmente o tempo para esta oferta especial acabou.</p>
+                    <p>Mas não se preocupe! Em breve teremos novas vagas disponíveis.</p>
+                    <button class="btn" onclick="this.parentElement.parentElement.remove()">ENTENDI</button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+        }
+
+        // Alternar FAQ
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+        }
+
+        // Ir para área de membros
+        function goToMembersArea() {
+            // Aqui você redirecionaria para a área de membros
+            alert('Redirecionando para a área de membros...');
+            // window.location.href = 'https://seusite.com/area-de-membros';
+        }
+
+        // Inicializar o site
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurações iniciais
+            console.log('Site O Segredo Chinês carregado com sucesso!');
+        });
+    </script>
+</body>
+</html>
